@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jalanyuk</title>
+  <style>
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 30%, #cbd5e1 70%, #94a3b8 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            padding-top: 80px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(148, 163, 184, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(203, 213, 225, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(226, 232, 240, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(148, 163, 184, 0.04) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .background-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(148, 163, 184, 0.05));
+            backdrop-filter: blur(1px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: floatAnimation 15s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 20s;
+        }
+
+        .shape-2 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            right: 15%;
+            animation-delay: -5s;
+            animation-duration: 25s;
+            border-radius: 30%;
+        }
+
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -10s;
+            animation-duration: 18s;
+        }
+
+        .shape-4 {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -15s;
+            animation-duration: 22s;
+            border-radius: 20%;
+        }
+
+        @keyframes floatAnimation {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px) rotate(90deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-10px) translateX(-10px) rotate(180deg);
+                opacity: 0.3;
+            }
+            75% {
+                transform: translateY(-30px) translateX(5px) rotate(270deg);
+                opacity: 0.4;
+            }
+        }
+
+        .page-wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navbar Styles - Hitam Solid */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(15, 23, 42, 0.5);
+        }
+
+        .navbar_container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .navbar_logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .navbar_logo:hover {
+            transform: scale(1.05);
+            color: #e2e8f0;
+        }
+
+        .navbar_profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar_notification {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .navbar_notification:hover {
+            background-color: rgba(71, 85, 105, 0.3);
+            color: #ffffff;
+        }
+
+        .notification_badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .navbar_user {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar_user:hover {
+            background-color: rgba(71, 85, 105, 0.3);
+        }
+
+        .navbar_avatar {
+            width: 40px;
+            height: 40px;
+            background: #64748b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar_username {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .user_dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #1a1a1a;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-top: 8px;
+        }
+
+        .user_dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown_item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .dropdown_item:hover {
+            background-color: rgba(71, 85, 105, 0.3);
+            color: #ffffff;
+        }
+
+        .dropdown_item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown_item:last-child {
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid rgba(71, 85, 105, 0.3);
+            color: #f87171;
+        }
+
+        .dropdown_item:last-child:hover {
+            background-color: rgba(127, 29, 29, 0.3);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 24px;
+            margin: 40px 0;
+            border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+            padding-bottom: 0;
+        }
+
+        .nav-item {
+            color: #64748b;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.8);
+            color: #1e293b;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1a1a1a;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 32px;
+            align-items: start;
+            margin-top: 20px;
+        }
+
+        .left-section, .right-section {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(148, 163, 184, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+
+        .supported-methods {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            color: #64748b;
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .payment-icon {
+            background: rgba(148, 163, 184, 0.1);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .hot-cryptos h3 {
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+
+        .crypto-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .crypto-item {
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
+        }
+
+        .crypto-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .crypto-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .panel-tabs {
+            display: flex;
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #1a1a1a;
+            color: #1a1a1a;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 0 0 12px 12px;
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            border-top: none;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(248, 250, 252, 0.8);
+            color: #1e293b;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #1a1a1a;
+            box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 16px;
+            background: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 26, 26, 0.3);
+        }
+
+        .action-btn:hover {
+            background: #2a2a2a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 26, 26, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar_container {
+                padding: 0 16px;
+            }
+
+            .navbar_username {
+                display: none;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .floating-shapes .shape {
+                opacity: 0.2;
+            }
+        }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="upper_wrap">
+      <!-- Fixed Navbar -->
+      <div class="navbar">
+        <div class="navbar_container">
+     <a href="index.php" class="navbar_logo">Jalanyuk</a>
+
+          
+          <div class="navbar_profile">
+            <div class="navbar_notification">
+              🔔
+              <span class="notification_badge">3</span>
+            </div>
+            
+            <div class="navbar_user" onclick="toggleUserDropdown()">
+              <div class="navbar_avatar">JD</div>
+              <span class="navbar_username">John Doe</span>
+              
+              <!-- Dropdown Menu -->
+              <div class="user_dropdown" id="userDropdown">
+                <a href="#" class="dropdown_item">👤 Profile</a>
+                <a href="#" class="dropdown_item">⚙️ Settings</a>
+                <a href="#" class="dropdown_item">🚪 Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="left-section">
+          <div class="header">
+            <h1>Top Up Lewat Bank Mana Saja</h1>
+            <div class="supported-methods">
+              <span>Supported:</span>
+              <div class="payment-icons">
+                <div class="payment-icon">🏦</div>
+                <div class="payment-icon">💳</div>
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">OVO</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hot-cryptos">
+            <h3>Transaksi Terakhir</h3>
+            <div class="crypto-list">
+              <div class="crypto-item">
+                <div class="crypto-info">
+                  <div class="crypto-icon" style="background: #f7931a;">₿</div>
+                  <div>
+                    <div><strong>Rehan</strong></div>
+                    <div style="font-size: 0.9rem; color: #aaa;">Transfer</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div><strong>$45,230</strong></div>
+                  <div style="color: #00e676; font-size: 0.9rem;">+2.45%</div>
+                </div>
+              </div>
+
+              <div class="crypto-item">
+                <div class="crypto-info">
+                  <div class="crypto-icon" style="background: #627eea;">Ξ</div>
+                  <div>
+                    <div><strong>Avit</strong></div>
+                    <div style="font-size: 0.9rem; color: #aaa;">Transfer</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div><strong>$2,840</strong></div>
+                  <div style="color: #00e676; font-size: 0.9rem;">+1.82%</div>
+                </div>
+              </div>
+
+              <div class="crypto-item">
+                <div class="crypto-info">
+                  <div class="crypto-icon" style="background: #26a17b;">₮</div>
+                  <div>
+                    <div><strong>Gopay</strong></div>
+                    <div style="font-size: 0.9rem; color: #aaa;">Topup</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div><strong>$1.00</strong></div>
+                  <div style="color: #ccc; font-size: 0.9rem;">0.00%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-section">
+          <div class="panel-tabs">
+            <button class="tab-btn active" id="topupTab">Top Up</button>
+            <button class="tab-btn" id="transferTab">Transfer</button>
+          </div>
+          <div class="tab-content" id="topupContent">
+            <div class="input-group">
+              <label for="topupMethod">Metode Top Up</label>
+              <select id="topupMethod">
+                <option value="bank">Bank Transfer</option>
+                <option value="ewallet">E-Wallet</option>
+                <option value="credit">Credit/Debit Card</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="topupAmount">Nominal (Rp)</label>
+              <input type="text" id="topupAmount" placeholder="Masukkan jumlah top up">
+            </div>
+            <button class="action-btn">Top Up Sekarang</button>
+          </div>
+
+          <div class="tab-content hidden" id="transferContent">
+            <div class="input-group">
+              <label for="transferTarget">Tujuan Transfer</label>
+              <input type="text" id="transferTarget" placeholder="Masukkan nama atau nomor rekening">
+            </div>
+            <div class="input-group">
+              <label for="transferAmount">Nominal (Rp)</label>
+              <input type="text" id="transferAmount" placeholder="Masukkan jumlah transfer">
+            </div>
+            <div class="input-group">
+              <label for="transferMessage">Pesan (opsional)</label>
+              <textarea id="transferMessage" placeholder="Contoh: untuk makan siang"></textarea>
+            </div>
+            <button class="action-btn">Kirim Transfer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab functionality
+    const topupTab = document.getElementById('topupTab');
+    const transferTab = document.getElementById('transferTab');
+    const topupContent = document.getElementById('topupContent');
+    const transferContent = document.getElementById('transferContent');
+
+    topupTab.addEventListener('click', () => {
+      topupTab.classList.add('active');
+      transferTab.classList.remove('active');
+      topupContent.classList.remove('hidden');
+      transferContent.classList.add('hidden');
+    });
+
+    transferTab.addEventListener('click', () => {
+      transferTab.classList.add('active');
+      topupTab.classList.remove('active');
+      transferContent.classList.remove('hidden');
+      topupContent.classList.add('hidden');
+    });
+
+    // User dropdown functionality
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const userDropdown = document.getElementById('userDropdown');
+      const navbarUser = document.querySelector('.navbar_user');
+      
+      if (!navbarUser.contains(event.target)) {
+        userDropdown.classList.remove('show');
+      }
+    });
+
+    // Navigation tabs functionality
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all items
+        navItems.forEach(nav => nav.classList.remove('active'));
+        
+        // Add active class to clicked item
+        this.classList.add('active');
+      });
+    });
+
+    // Notification click handler
+    document.querySelector('.navbar_notification').addEventListener('click', function() {
+      alert('You have 3 new notifications!');
+    });
+  </script>
+</body>
+</html>

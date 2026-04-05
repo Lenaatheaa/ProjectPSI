@@ -1,0 +1,128 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Top Up & Transfer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: 
+#f2f5f9;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .card {
+      flex: 1 1 400px;
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: 
+#007bff;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: 
+#007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: 
+#0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Top Up Section -->
+    <div class="card">
+      <h2>Top Up</h2>
+      <form>
+        <label for="topup-method">Metode Top Up</label>
+        <select id="topup-method">
+          <option value="bank">Bank Transfer</option>
+          <option value="ewallet">E-Wallet</option>
+          <option value="qris">QRIS</option>
+        </select>
+
+        <label for="topup-amount">Nominal (Rp)</label>
+        <input type="number" id="topup-amount" placeholder="Masukkan jumlah top up">
+
+        <button type="submit">Top Up Sekarang</button>
+      </form>
+    </div>
+
+    <!-- Transfer Section -->
+    <div class="card">
+      <h2>Transfer</h2>
+      <form>
+        <label for="recipient">Tujuan Transfer</label>
+        <input type="text" id="recipient" placeholder="Masukkan nama atau nomor rekening">
+
+        <label for="transfer-amount">Nominal (Rp)</label>
+        <input type="number" id="transfer-amount" placeholder="Masukkan jumlah transfer">
+
+        <label for="message">Pesan (opsional)</label>
+        <input type="text" id="message" placeholder="Contoh: untuk makan siang">
+
+        <button type="submit">Kirim Transfer</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

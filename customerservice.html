@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assistant Chat - Lebar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 600px; /* Lebar diperbesar */
+      height: 650px;
+      background: #0f0f0f;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #0f0f0f;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid #2b2b2b;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #2a2a2a;
+    }
+
+    .chat-header .info {
+      flex-grow: 1;
+    }
+
+    .chat-header .info .name {
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .chat-header .info .status {
+      font-size: 13px;
+      color: #00ff95;
+    }
+
+    .chat-header .close-btn {
+      font-size: 18px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .chat-body {
+      flex: 1;
+      background: #0f0f0f;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 75%;
+      background: #2a2a2a;
+      color: #ffffff;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .message.bot {
+      align-self: flex-start;
+      border-top-left-radius: 4px;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: #333;
+      border-top-right-radius: 4px;
+    }
+
+    .chat-footer {
+      background: #0f0f0f;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      border-top: 1px solid #2c2c2c;
+    }
+
+    .chat-footer input {
+      flex: 1;
+      background: #1e1e1e;
+      border: none;
+      border-radius: 25px;
+      padding: 14px 20px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .chat-footer input::placeholder {
+      color: #888;
+    }
+
+    .chat-footer button {
+      background: #222;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+
+    .chat-footer button:hover {
+      background: #333;
+    }
+
+    .chat-footer button svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <img src="8d30f183-d109-4462-9f74-b86c290220e7.png" alt="Assistant">
+      <div class="info">
+        <div class="name">Assistant</div>
+        <div class="status">Online</div>
+      </div>
+      <div class="close-btn" onclick="alert('Closed')">✕</div>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="message bot">Halo! Ada yang bisa saya bantu?</div>
+    </div>
+
+    <div class="chat-footer">
+      <input type="text" id="chatInput" placeholder="Ketik pesan Anda..." />
+      <button onclick="sendMessage()">
+        <svg viewBox="0 0 24 24">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBody = document.getElementById("chatBody");
+
+      const userMessage = document.createElement("div");
+      userMessage.className = "message user";
+      userMessage.textContent = text;
+      chatBody.appendChild(userMessage);
+
+      input.value = "";
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>
