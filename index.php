@@ -1,3 +1,4 @@
+// trigger sonar
 <?php
 // navbar.php
 require_once 'session_check.php';
