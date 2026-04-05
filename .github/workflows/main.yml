@@ -1,4 +1,4 @@
-name: SonarQube
+name: SonarCloud
 
 on:
   push:
@@ -6,8 +6,7 @@ on:
       - main
 
 jobs:
-  sonar:
-    name: SonarCloud Scan
+  sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +16,4 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
